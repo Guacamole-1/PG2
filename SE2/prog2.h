@@ -25,4 +25,12 @@ int fillBookData( BookData *b, const char *line );
 
 int collAddBook( const char *line, void *context );
 
+void collSortTitle( Collection *col );
+
+int compare_title(const void *str1, const void *str2);
+
+//int compare_isbn(const void *str1, const void *str2);
+
+void collSortRefIsbn( Collection *col );
+
 #endif 
