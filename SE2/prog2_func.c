@@ -3,6 +3,7 @@
 #include "prog2.h"
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 
 #define TITULO 0
@@ -62,3 +63,28 @@ int collAddBook( const char *line, void *context ){
 
 return 1;
 }
+
+int compare_title(const void *str1, const void *str2){
+    return strcmp_ic(((BookData *)str1)->title, ((BookData *)str2)->title);
+}
+int compare_isbn(const void *str1, const void *str2){
+    BookData  str11 = *(BookData *)str1;
+    BookData  str22 = *(BookData *)str2;
+    printf("%s\n",str11.isbn);
+    return strcmp_ic(str11.isbn, str22.isbn);
+}
+
+void collSortTitle( Collection *col ){
+    qsort(col->books,col->count,sizeof *col->books,compare_title);
+}
+void collSortRefIsbn( Collection *col ){
+
+    for (int i = 0; i < col->count; i++)
+    {
+        col->refs[i] = &col->books[i];
+    }
+    printf("!%d!",strcmp_ic(col->books[1].isbn,col->books[0].isbn));
+    printf("!%d!",strcmp_ic(col->books[1].isbn,col->books[0].isbn));
+    qsort(col->refs,col->count,sizeof *col->refs,compare_isbn);
+}
+// *col->refs[0] = &Bookdata
