@@ -1,3 +1,7 @@
+// Bruno Soares 51832 
+// Duarte Santos 51764
+// Pedro Alves 51451
+
 #include "prog2.h"
 #include "prog1.h"
 #include <stdio.h>

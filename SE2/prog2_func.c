@@ -1,9 +1,15 @@
+// Bruno Soares 51832 
+// Duarte Santos 51764
+// Pedro Alves 51451
+
 #include "../SE1/prog22.h"
 #include "../SE1/prog24.h"
 #include "prog2.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
+
 
 
 #define TITULO 0
@@ -67,11 +73,9 @@ return 1;
 int compare_title(const void *str1, const void *str2){
     return strcmp_ic(((BookData *)str1)->title, ((BookData *)str2)->title);
 }
+
 int compare_isbn(const void *str1, const void *str2){
-    BookData  str11 = *(BookData *)str1;
-    BookData  str22 = *(BookData *)str2;
-    printf("%s\n",str11.isbn);
-    return strcmp_ic(str11.isbn, str22.isbn);
+    return strcmp_ic((*(BookData **)str1)->isbn, (*(BookData **)str2)->isbn);
 }
 
 void collSortTitle( Collection *col ){
@@ -83,8 +87,71 @@ void collSortRefIsbn( Collection *col ){
     {
         col->refs[i] = &col->books[i];
     }
-    printf("!%d!",strcmp_ic(col->books[1].isbn,col->books[0].isbn));
-    printf("!%d!",strcmp_ic(col->books[1].isbn,col->books[0].isbn));
     qsort(col->refs,col->count,sizeof *col->refs,compare_isbn);
 }
-// *col->refs[0] = &Bookdata
+
+int bookContainsAuthor( BookData *b, const char *word ){
+
+    const char *sepAuth = ",";
+    char *rest;
+    char temp[MAX_AUTHORS];
+    char temp2[MAX_AUTHORS];
+    strcpy(temp,b->authors);
+    strcpy(temp2, word);
+
+    rest = strtok(temp,sepAuth);
+
+    while(rest != NULL){
+
+        separatorUnify(rest);
+        separatorUnify(temp2);
+
+        if(strcmp_ic(temp2,rest) == 0){
+            return 1;
+        }
+        rest = strtok(NULL, sepAuth);
+    }
+
+    const char *sep = " ";
+    strcpy(temp,b->authors);
+    rest = strtok(temp,sep);
+    separatorUnify(temp2);
+    while(rest != NULL){
+
+        if(strcmp_ic(temp2,rest) == 0){
+            return 1;
+        }
+        rest = strtok(NULL, sep);
+    }
+
+return 0;
+}
+void find_books_isbn(Collection *col, const char *target_isbn) {
+
+    collSortRefIsbn(col);
+
+    BookData key;
+    strcpy(key.isbn, target_isbn);
+
+    BookData *key_ptr = &key;
+    BookData **found = (BookData **)bsearch(&key_ptr, col->refs, col->count, sizeof(BookData *), compare_isbn);
+
+    if (found == NULL) {
+        printf("Nenhum livro encontrado com o ISBN: %s\n", target_isbn);
+        return;
+    }
+
+    printf("Livros encontrados com o ISBN %s:\n", target_isbn);
+    // Verificar livros anteriores com o mesmo ISBN
+    while (strcmp((*(found - 1))->isbn, target_isbn) == 0) {
+        found--;
+    }
+    // Iterar para frente e listar todos os livros com o mesmo ISBN
+    while (strcmp_ic((*found)->isbn, target_isbn) == 0) {
+        printf("- Título: %s\n", (*found)->title);
+        printf("  Autor(es): %s\n", (*found)->authors);
+        printf("  Editora: %s\n\n", (*found)->publisher);
+        
+        found++;
+    }
+}
