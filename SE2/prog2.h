@@ -29,7 +29,11 @@ void collSortTitle( Collection *col );
 
 int compare_title(const void *str1, const void *str2);
 
-//int compare_isbn(const void *str1, const void *str2);
+int compare_isbn(const void *str1, const void *str2);
+
+void find_books_isbn(Collection *col, const char *target_isbn);
+
+int bookContainsAuthor( BookData *b, const char *word );
 
 void collSortRefIsbn( Collection *col );
 

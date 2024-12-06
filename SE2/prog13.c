@@ -1,3 +1,7 @@
+// Bruno Soares 51832 
+// Duarte Santos 51764
+// Pedro Alves 51451
+
 #include <stdio.h>
 #include "../SE1/prog22.h"
 #include "../SE1/prog24.h"
