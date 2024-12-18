@@ -20,11 +20,10 @@ typedef struct{  // Descritor de um vetor
  VecBookRef *isbnVec;  //  vetor a ordenar por isbn 
 } DynCollection; 
 
-Book *bookCreate( const char *line ); 
 
 void bookFree( Book *b );
 
-int fillBookData( Book *b, const char *line );
+Book *bookCreate( const char *line ); 
 
 VecBookRef *vecRefCreate ( void );
 

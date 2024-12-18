@@ -7,9 +7,11 @@ SE2_dep = ../SE2/prog1_func.o
 prog1: prog1.h
 	gcc -g -Wall -c $< -o $@
 
-teste: teste.o $(SE1_dep) vecs.o dyns.o $(SE2_dep)
+main: main.o $(SE1_dep)  $(SE2_dep) vecs.o dyns.o 
 	gcc -g -Wall $^ -o $@
 
+teste: teste.o $(SE1_dep) $(SE2_dep) vecs.o dyns.o 
+	gcc -g -Wall $^ -o $@
 
 
 #.PHONY: run

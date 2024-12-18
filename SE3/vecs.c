@@ -20,10 +20,12 @@ void bookFree( Book *b ){
     
 }
 
-int fillBookData( Book *b, const char *line ){
+Book *bookCreate( const char *line ){
     int pos = 0;
-    char *line1 = malloc(strlen(line) + 1);
-    char *rest = malloc(strlen(line) + 1);
+    Book *b = malloc(sizeof(Book));
+    char *line0 = malloc(strlen(line) + 1);
+    char *line1 = line0;
+    char *rest;
     strcpy(line1, line);
     do{
             rest = splitField( line1 );
@@ -33,7 +35,7 @@ int fillBookData( Book *b, const char *line ){
                 free(line1);
                 free(rest);
                 bookFree(b);
-                return 0;
+                return NULL;
             }
             
             switch (pos)
@@ -58,21 +60,12 @@ int fillBookData( Book *b, const char *line ){
             }
             pos++;
         }while((line1 = rest) != NULL);
-    free(line1);
-    free(rest);
-    return 1; 
+    free(line0);
+    return b; 
 }
 
 
-Book *bookCreate( const char *line ){
-    Book *book = malloc(sizeof(Book));
-    if (fillBookData(book,line)){
-        return book;
-    }   else {
-        bookFree(book);
-        return NULL;
-    }
-}
+
 
 VecBookRef *vecRefCreate ( void ){
 
@@ -126,10 +119,10 @@ void vecRefSortTitle( VecBookRef *vec ){
 Book *vecRefSearchIsbn( VecBookRef *vec, char *isbn ){
 
     if (vec == NULL || strlen(isbn) == 0 || vec->refs == NULL || vec->size == 0) {
-        return NULL; // Argumentos inválidos ou vetor vazio
+        return NULL;
     }
 
-    Book key ;
+    Book key = { .isbn = "" };
     strcpy(key.isbn, isbn);
 
     Book *key_ptr = &key;
