@@ -22,6 +22,7 @@ int dynCollAddBook( const char *line, void *context ){
     }
     
     vecRefAdd(col->titleVec,b);
+    vecRefAdd(col->isbnVec,b);
     
 
 return 1;

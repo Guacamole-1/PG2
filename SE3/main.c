@@ -63,14 +63,14 @@ int main(int argc, char* argv[]){
                Book* found = vecRefSearchIsbn(col->isbnVec,args);
                if (found != NULL)
                {
-                printf("Livros encontrados com o ISBN %s:\n", args);
+                printf("Livro encontrado com o ISBN %s:\n", args);
                 printBook(found);
                } else {
                 printf("Não foi encontrado nenhum livro com o ISBN %s:\n", args);
                }
                
             } else {
-                printf("Falta o numero do ISBN para procurar! Usa h para ajuda\n");
+                printf("Falta o numero do ISBN para procurar! Insere h para ajuda\n");
             }
             
             
