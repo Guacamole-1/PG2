@@ -11,7 +11,7 @@ int main(){
     //puts("p");
     //printf("%s",col->titleVec->refs[0]->title);
     //dynCollFill(col,"../SE2/dados.csv");
-    root = binTreeStart(col->titleVec);
+    binTreeStart(root,col->titleVec);
     printf("%s",col->titleVec->refs[0]->title);
     //puts(col->isbnVec->refs[0]->title);
     dynCollFree(col);

@@ -5,13 +5,9 @@
 #include "../SE1/prog22.h"
 #include "../SE1/prog24.h"
 #include "vecs.h"
+#include "bin_tree.h"
 #include "linked_list.h"
 
-typedef struct tNode{
- struct tNode *left, *right;
- char *word;
- LNode *head;
-} TNode; 
 
 TNode *treeToSortedList( TNode *r, TNode *link ){
 
@@ -42,20 +38,17 @@ void bstAdd( TNode **rootPtr, char *namWord, Book *ref ){
 
     TNode *scoutptr = *rootPtr;
 
-    if( strcmp_ic(namWord, (*rootPtr)->word) == 0 ){
-        lRefAdd(&scoutptr->head, ref);
+    
+    if(scoutptr->word == NULL){
+        TNode *node = (TNode *)malloc(sizeof(TNode));
+        node->word = namWord;
+        lRefAdd(&scoutptr->head, ref); 
+        scoutptr = node;
         return;
     }
 
-    if(scoutptr == NULL){
-        TNode *node = (TNode *)malloc(sizeof(TNode));
-        node->word = namWord;
+    if( strcmp_ic(namWord, (*rootPtr)->word) == 0 ){
         lRefAdd(&scoutptr->head, ref);
-
-        node->head->next = NULL;
-        node->left = node->right = NULL;     
-        
-        scoutptr = node;
         return;
     }
 
@@ -103,38 +96,40 @@ LNode *bstSearch ( TNode *root, char *namWord ){
 }
 
 
-TNode *binTreeStart(TNode *root, VecBookRef *vec){
+void binTreeStart(TNode *root, VecBookRef *vec){
 
     Book *temp;
 
     const char *sepAuth = ",";
     const char *sep = " ";
-    char *rest;
-    char *rest1;
-    char *temp1;
+    char *rest = malloc(500);
+    char *rest1 = malloc(500);
+    char *authors = malloc(500);
 
     for(int i = 0; i <= vecRefSize(vec); i++){
+        
         temp = vecRefGet(vec, i);
         
-        strcpy(temp1,temp->authors);
+        strcpy(authors,temp->authors);
+        strcpy(rest,authors);
 
-        rest = strtok(temp1,sepAuth);
-        while(temp1 != NULL){
+        strtok(authors,sepAuth);
+        
+        while(authors != NULL){
 
-            while(temp1 != NULL){
+            while(authors != NULL){
 
-                rest1 = strtok(temp1,sep);
+                strtok(authors,sep);
 
-                bstAdd(&root, temp1, temp);
+                bstAdd(&root, authors, temp);
 
-                temp1 = rest1;
+                authors = rest1;
             }
-            temp1 = rest;
-            rest = strtok(temp1,sepAuth);
+            authors = rest;
+            rest = strtok(authors,sepAuth);
         }
     }
 
-    return root;
 }
 
 void bstFree(TNode *root){

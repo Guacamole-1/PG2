@@ -12,15 +12,14 @@ int lRefAdd( LNode **headPtr, Book *ref ){
     
     LNode *scoutNode = *headPtr;
     
-    while(scoutNode->next != NULL){
+    while(1){
         
-        if(scoutNode->ref == ref){
+        if(scoutNode != NULL && scoutNode->ref == ref){
             return 0;
         }    
-        else if (scoutNode->next == NULL){
-            scoutNode->next = malloc(sizeof(LNode));
-            scoutNode->next->ref = ref;
-            scoutNode->next->next = NULL;
+        if (scoutNode == NULL){
+            scoutNode = malloc(sizeof(LNode));
+            scoutNode->ref = ref;
             return 1;
        }
        scoutNode = scoutNode->next;

@@ -20,6 +20,6 @@ LNode *bstSearch ( TNode *root, char *namWord );
 
 void bstFree(TNode *root);
 
-TNode *binTreeStart(VecBookRef *vec);
+void binTreeStart(TNode *root, VecBookRef *vec);
 
 #endif
