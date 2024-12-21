@@ -36,7 +36,7 @@ void dynCollFill( DynCollection *coll, const char *filename ){
 
 void dynCollFree( DynCollection *coll){
 
-    vecRefFree(coll->isbnVec, 1);
+    vecRefFree(coll->isbnVec, 0);
     vecRefFree(coll->titleVec, 1);
     free(coll);
 

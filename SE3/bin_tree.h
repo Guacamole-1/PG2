@@ -1,8 +1,25 @@
 #ifndef BIN_TREE_H
 #define BIN_TREE_H
-#include "vecs.h"
-typedef struct lNode{ 
- struct lNode *next; // ligação na lista 
- Book *ref; // referência de acesso a um descritor de livro 
-} LNode; 
+#include "linked_list.h"
+
+typedef struct tNode{
+ struct tNode *left, *right;
+ char *word;
+ LNode *head;
+} TNode; 
+
+TNode *treeToSortedList( TNode *r, TNode *link );
+
+TNode *sortedListToBalancedTree(TNode **listRoot, int n);
+
+void bstAdd( TNode **rootPtr, char *namWord, Book *ref );
+
+void bstBalance( TNode **rootPtr);
+
+LNode *bstSearch ( TNode *root, char *namWord );
+
+void bstFree(TNode *root);
+
+TNode *binTreeStart(VecBookRef *vec);
+
 #endif
