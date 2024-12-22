@@ -95,38 +95,37 @@ LNode *bstSearch ( TNode *root, char *namWord ){
     return bstSearch(scout->right,namWord);  
 }
 
+void removeComma(char *str) {
+    int i, j;
+    for (i = 0, j = 0; str[i] != '\0'; i++) {
+        if (str[i] != ',') {
+            str[j++] = str[i];
+        }
+    }
+    str[j] = '\0';
+}
 
 void binTreeStart(TNode *root, VecBookRef *vec){
 
-    Book *temp;
+    Book *book;
 
-    const char *sepAuth = ",";
     const char *sep = " ";
-    char *rest = malloc(500);
-    char *rest1 = malloc(500);
+    char *temp1 = malloc(500);
     char *authors = malloc(500);
 
-    for(int i = 0; i <= vecRefSize(vec); i++){
+    for(int i = 0; i < vecRefSize(vec); i++){
         
-        temp = vecRefGet(vec, i);
+        book = vecRefGet(vec, i);
         
-        strcpy(authors,temp->authors);
-        strcpy(rest,authors);
+        strcpy(authors,book->authors);
+        removeComma(authors);
 
-        strtok(authors,sepAuth);
         
-        while(authors != NULL){
-
-            while(authors != NULL){
-
-                strtok(authors,sep);
-
-                bstAdd(&root, authors, temp);
-
-                authors = rest1;
-            }
-            authors = rest;
-            rest = strtok(authors,sepAuth);
+        temp1 = strtok(authors, sep);
+   
+        while( temp1 != NULL ) {
+            bstAdd(&root, temp1, book);
+            temp1 = strtok(NULL, sep);
         }
     }
 
