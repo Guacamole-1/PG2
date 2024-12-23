@@ -5,32 +5,43 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../SE1/prog22.h"
+#include "../SE1/prog24.h"
 #include "vecs.h"
 #include "linked_list.h"
 
-int lRefAdd( LNode **headPtr, Book *ref ){
-    
-    LNode *scoutNode = *headPtr;
-    
-    while(1){
-        
-        if(scoutNode != NULL && scoutNode->ref == ref){
+
+int lRefAdd(LNode **headPtr, Book *ref) {
+
+    LNode *scoutptr = *headPtr;
+    while (scoutptr != NULL) {
+        if (strcmp(scoutptr->ref->title, ref->title) == 0) {
             return 0;
-        }    
-        if (scoutNode == NULL){
-            scoutNode = malloc(sizeof(LNode));
-            scoutNode->ref = ref;
-            return 1;
-       }
-       scoutNode = scoutNode->next;
-    } 
+        }
+            scoutptr = scoutptr->next;
+    }
+
+    if(*headPtr == NULL){
+        LNode *newNode = malloc(sizeof(LNode));
+        newNode->ref = ref;
+        newNode->next = NULL;
+        *headPtr = newNode;
+        return 1;
+    }else{
+        scoutptr = *headPtr;
+        return lRefAdd(&scoutptr->next, ref);
+    }
+    
     return 1;
 }
 
 void lRefPrint( LNode *head ){
-    
-    printf("%s;%s;%s;%s\n",head->ref->title,head->ref->isbn,head->ref->authors,head->ref->publisher);
+    LNode *current = head;
 
+    while(current != NULL){
+    printf("%s;%s;%s;%s\n",current->ref->title,current->ref->isbn,current->ref->authors,current->ref->publisher);
+    current = current->next;
+    }   
 }
 
 void lRefFree( LNode *head){
@@ -38,9 +49,11 @@ void lRefFree( LNode *head){
     LNode *ptr = head;
 
     while(head != NULL){
-    head = head->next;
-    free(ptr);
     ptr = head;
+    head = head->next;
+    
+    free(ptr);
+    
     }
 
 }

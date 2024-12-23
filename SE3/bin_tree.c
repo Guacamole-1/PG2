@@ -36,27 +36,26 @@ TNode *sortedListToBalancedTree(TNode **listRoot, int n) {
 
 void bstAdd( TNode **rootPtr, char *namWord, Book *ref ){
 
-    TNode *scoutptr = *rootPtr;
-
-    
-    if(scoutptr->word == NULL){
-        TNode *node = (TNode *)malloc(sizeof(TNode));
-        node->word = namWord;
-        lRefAdd(&scoutptr->head, ref); 
-        scoutptr = node;
+    if(*rootPtr == NULL){
+        *rootPtr = malloc(sizeof(TNode));
+        (*rootPtr)->word = namWord;
+        (*rootPtr)->left = NULL;
+        (*rootPtr)->right = NULL;
+        (*rootPtr)->head = NULL;
+        lRefAdd(&(*rootPtr)->head, ref); 
         return;
     }
 
     if( strcmp_ic(namWord, (*rootPtr)->word) == 0 ){
-        lRefAdd(&scoutptr->head, ref);
+        lRefAdd(&(*rootPtr)->head, ref);
         return;
     }
 
     if (strcmp_ic(namWord, (*rootPtr)->word) < 0){
-        bstAdd(& (*rootPtr) ->left,namWord,ref);
+        bstAdd(&(*rootPtr)->left,namWord,ref);
     }
     else if (strcmp_ic(namWord, (*rootPtr)->word) == 1){
-        bstAdd(& (*rootPtr) ->right,namWord,ref);
+        bstAdd(&(*rootPtr)->right,namWord,ref);
     }
     return;
 }
@@ -105,29 +104,25 @@ void removeComma(char *str) {
     str[j] = '\0';
 }
 
-void binTreeStart(TNode *root, VecBookRef *vec){
+void binTreeStart(TNode **root, VecBookRef *vec){
 
-    Book *book;
-
-    const char *sep = " ";
-    char *temp1 = malloc(500);
-    char *authors = malloc(500);
-
+    char *temp1;
     for(int i = 0; i < vecRefSize(vec); i++){
         
-        book = vecRefGet(vec, i);
-        
+        Book *book = vecRefGet(vec, i);
+        char *authors = malloc(strlen(book->authors)+1);
         strcpy(authors,book->authors);
+        
         removeComma(authors);
 
-        
-        temp1 = strtok(authors, sep);
+        temp1 = strtok(authors, " ");
    
         while( temp1 != NULL ) {
-            bstAdd(&root, temp1, book);
-            temp1 = strtok(NULL, sep);
+            bstAdd(root, temp1, book);
+            temp1 = strtok(NULL, " ");
         }
     }
+    bstBalance(root);
 
 }
 

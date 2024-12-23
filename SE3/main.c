@@ -28,8 +28,8 @@ printf("q - Terminar\n");
 int main(int argc, char* argv[]){
     char line[255];
     DynCollection *col = dynCollCreate();
-    TNode *root;
-    /*
+    TNode *root = NULL;
+
     if (argc < 2){
         printf("Não há argumentos suficientes!\n");
         printf("%s {nome do ficheiro}\n",argv[0]);
@@ -40,11 +40,8 @@ int main(int argc, char* argv[]){
         return 0;
     }
     separatorUnify(argv[1]);
-    */
-    dynCollFill(col,"dados.csv");
-    //root = binTreeStart(col->titleVec);
-
-
+    dynCollFill(col,argv[1]);
+    binTreeStart(&root,col->titleVec);
 
     while (1)
     {   
@@ -87,6 +84,9 @@ int main(int argc, char* argv[]){
          {
             if (args != NULL)
             {
+                LNode *head = malloc(sizeof(LNode));
+                head = bstSearch(root, args);
+                lRefPrint(head);
                 
             }
          }   
@@ -96,8 +96,9 @@ int main(int argc, char* argv[]){
             help();
         }
         else if (*cmd == 'q' )
-        {            dynCollFree(col);
-            //bstFree(root);
+        {   
+            dynCollFree(col);
+            bstFree(root);
             return 0;
         }
         

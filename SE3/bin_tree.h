@@ -20,6 +20,8 @@ LNode *bstSearch ( TNode *root, char *namWord );
 
 void bstFree(TNode *root);
 
-void binTreeStart(TNode *root, VecBookRef *vec);
+void removeComma(char *str);
+
+void binTreeStart(TNode **root, VecBookRef *vec);
 
 #endif
